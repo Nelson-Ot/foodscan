@@ -1,75 +1,76 @@
 <?php
 
-
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\OtpController;
-use App\Http\Controllers\Admin\PosController;
-use App\Http\Controllers\Admin\TaxController;
-use App\Http\Controllers\Admin\ItemController;
-use App\Http\Controllers\Admin\MailController;
-use App\Http\Controllers\Admin\PageController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\SiteController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Admin\OfferController;
-use App\Http\Controllers\Admin\ThemeController;
-use App\Http\Controllers\Auth\SignupController;
+use App\Enums\OrderStatus;
+use App\Http\Controllers\Admin\AdministratorAddressController;
+use App\Http\Controllers\Admin\AdministratorController;
+use App\Http\Controllers\Admin\AnalyticController;
+use App\Http\Controllers\Admin\AnalyticSectionController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CompanyController;
-use App\Http\Controllers\Admin\LicenseController;
-use App\Http\Controllers\Admin\AnalyticController;
+use App\Http\Controllers\Admin\CountryCodeController;
+use App\Http\Controllers\Admin\CreditBalanceReportController;
 use App\Http\Controllers\Admin\CurrencyController;
+use App\Http\Controllers\Admin\CustomerAddressController;
 use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\EmployeeController;
-use App\Http\Controllers\Admin\LanguageController;
-use App\Http\Controllers\Admin\PosOrderController;
-use App\Http\Controllers\Admin\TimezoneController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DefaultAccessController;
+use App\Http\Controllers\Admin\DiningTableController;
+use App\Http\Controllers\Admin\EmployeeAddressController;
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\ItemAddonController;
+use App\Http\Controllers\Admin\ItemAttributeController;
+use App\Http\Controllers\Admin\ItemCategoryController;
+use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\ItemExtraController;
+use App\Http\Controllers\Admin\ItemsReportController;
+use App\Http\Controllers\Admin\ItemVariationController;
+use App\Http\Controllers\Admin\LanguageController;
+use App\Http\Controllers\Admin\LicenseController;
+use App\Http\Controllers\Admin\MailController;
+use App\Http\Controllers\Admin\MenuSectionController;
+use App\Http\Controllers\Admin\MenuTemplateController;
+use App\Http\Controllers\Admin\MyOrderDetailsController;
+use App\Http\Controllers\Admin\NotificationAlertController;
+use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\OfferItemController;
-use App\Http\Controllers\Auth\DeactivateController;
+use App\Http\Controllers\Admin\OtpController;
+use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\PaymentGatewayController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\PosCategoryController;
+use App\Http\Controllers\Admin\PosController;
+use App\Http\Controllers\Admin\PosOrderController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SalesReportController;
 use App\Http\Controllers\Admin\SimpleUserController;
+use App\Http\Controllers\Admin\SiteController;
 use App\Http\Controllers\Admin\SmsGatewayController;
+use App\Http\Controllers\Admin\TableOrderController as AdminTableOrderController;
+use App\Http\Controllers\Admin\TaxController;
+use App\Http\Controllers\Admin\ThemeController;
+use App\Http\Controllers\Admin\TimezoneController;
+use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Auth\DeactivateController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\GuestSignupController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RefreshTokenController;
+use App\Http\Controllers\Auth\SignupController;
+use App\Http\Controllers\Frontend\BranchController as FrontendBranchController;
+use App\Http\Controllers\Frontend\ItemController as FrontendItemController;
+use App\Http\Controllers\Frontend\LanguageController as FrontendLanguageController;
+use App\Http\Controllers\Frontend\PageController as FrontendPageController;
 use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\SettingController;
-use App\Http\Controllers\Admin\CountryCodeController;
-use App\Http\Controllers\Admin\DiningTableController;
-use App\Http\Controllers\Admin\ItemsReportController;
-use App\Http\Controllers\Admin\MenuSectionController;
-use App\Http\Controllers\Admin\PosCategoryController;
-use App\Http\Controllers\Admin\SalesReportController;
-use App\Http\Controllers\Admin\TransactionController;
-use App\Http\Controllers\Auth\RefreshTokenController;
-use App\Http\Controllers\Admin\ItemCategoryController;
-use App\Http\Controllers\Admin\MenuTemplateController;
-use App\Http\Controllers\Admin\NotificationController;
-use App\Http\Controllers\Admin\AdministratorController;
-use App\Http\Controllers\Admin\DefaultAccessController;
-use App\Http\Controllers\Admin\ItemAttributeController;
-use App\Http\Controllers\Admin\ItemVariationController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Frontend\TokenStoreController;
-use App\Http\Controllers\Admin\MyOrderDetailsController;
-use App\Http\Controllers\Admin\PaymentGatewayController;
-use App\Http\Controllers\Admin\AnalyticSectionController;
-use App\Http\Controllers\Admin\CustomerAddressController;
-use App\Http\Controllers\Admin\EmployeeAddressController;
-use App\Http\Controllers\Admin\NotificationAlertController;
-use App\Http\Controllers\Admin\CreditBalanceReportController;
-use App\Http\Controllers\Admin\AdministratorAddressController;
-use App\Http\Controllers\Table\OrderController as TableOrderController;
-use App\Http\Controllers\Frontend\ItemController as FrontendItemController;
-use App\Http\Controllers\Frontend\PageController as FrontendPageController;
-use App\Http\Controllers\Frontend\BranchController as FrontendBranchController;
-use App\Http\Controllers\Admin\TableOrderController as AdminTableOrderController;
-use App\Http\Controllers\Frontend\LanguageController as FrontendLanguageController;
 use App\Http\Controllers\Table\DiningTableController as TableDiningTableController;
 use App\Http\Controllers\Table\ItemCategoryController as TableItemCategoryController;
-
+use App\Http\Controllers\Table\OrderController as TableOrderController;
+use App\Models\Order;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,6 +83,11 @@ use App\Http\Controllers\Table\ItemCategoryController as TableItemCategoryContro
 |
 */
 
+Route::post('callback/mpesa/{order}', function (Request $request, Order $order) {
+    $payload = json_decode($request->getContent());
+
+    // $order->update(['status' => OrderStatus::PROCESSING]);
+})->name('callback.mpesa');
 
 Route::match(['get', 'post'], '/login', function () {
     return response()->json(['errors' => 'unauthenticated'], 401);
@@ -120,6 +126,7 @@ Route::prefix('auth')->middleware(['installed', 'apiKey', 'localization'])->name
         if (Auth::check()) {
             return response()->json(['status' => true]);
         }
+
         return response()->json(['status' => false]);
     });
 });
@@ -272,7 +279,6 @@ Route::prefix('admin')->name('admin.')->middleware(['installed', 'apiKey', 'auth
             Route::match(['put', 'patch'], '/{role}', [PermissionController::class, 'update']);
         });
 
-
         Route::prefix('language')->name('language.')->group(function () {
             Route::get('/', [LanguageController::class, 'index']);
             Route::post('/', [LanguageController::class, 'store']);
@@ -340,7 +346,6 @@ Route::prefix('admin')->name('admin.')->middleware(['installed', 'apiKey', 'auth
         Route::delete('/address/{employee}/{address}', [EmployeeAddressController::class, 'destroy']);
     });
 
-
     Route::prefix('offer')->name('offer.')->group(function () {
         Route::get('/', [OfferController::class, 'index']);
         Route::get('/show/{offer}', [OfferController::class, 'show']);
@@ -406,7 +411,6 @@ Route::prefix('admin')->name('admin.')->middleware(['installed', 'apiKey', 'auth
         Route::post('/token-create/{order}', [AdminTableOrderController::class, 'tokenCreate']);
     });
 
-
     Route::prefix('administrator')->name('administrator.')->group(function () {
         Route::get('/', [AdministratorController::class, 'index']);
         Route::get('/show/{administrator}', [AdministratorController::class, 'show']);
@@ -460,7 +464,6 @@ Route::prefix('admin')->name('admin.')->middleware(['installed', 'apiKey', 'auth
         Route::get('/', [CreditBalanceReportController::class, 'index']);
         Route::get('/export', [CreditBalanceReportController::class, 'export']);
     });
-
 
     Route::prefix('country-code')->name('country-code.')->group(function () {
         Route::get('/', [CountryCodeController::class, 'index']);
