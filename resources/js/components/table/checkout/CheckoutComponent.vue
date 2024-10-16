@@ -111,7 +111,7 @@
                                 <input
                                     v-model="customer.phone"
                                     id="phone"
-                                    type="text"
+                                    type="number"
                                     class="db-field-control"
                                 />
                             </div>
@@ -387,6 +387,7 @@ export default {
             );
         },
         orderSubmit: function () {
+            console.log(this.table);
             this.loading.isActive = true;
             this.checkoutProps.form.dining_table_id = this.table.id;
             this.checkoutProps.form.branch_id = this.table.branch_id;

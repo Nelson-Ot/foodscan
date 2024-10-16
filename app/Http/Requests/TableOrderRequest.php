@@ -41,7 +41,7 @@ class TableOrderRequest extends FormRequest
             'customer' => ['required_if:payment_method,digitalPayment', 'array'],
             'customer.phone' => Rule::when(
                 fn () => $this->input('payment_method') === 'digitalPayment',
-                ['required_if', 'integer', 'min_digits:9', 'max_digits:9']
+                ['required', 'integer', 'min_digits:9', 'max_digits:9']
             ),
         ];
     }
